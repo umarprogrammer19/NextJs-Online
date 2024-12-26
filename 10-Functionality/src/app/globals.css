@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Satoshi', sans-serif;
+}
+
+
+@font-face {
+  font-family: "satoshi";
+  src: url("./fonts/Satoshim.woff") format("woff");
+}
+@font-face {
+  font-family: "clash";
+  src: url("./fonts/ClashDisplay.woff") format("woff");
+}
+:root {
+  --background: #f8f9fa;
+  --foreground: #212529;
+}
