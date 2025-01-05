@@ -30,12 +30,11 @@ export const fetchAndMigrateData = async () => {
 const uploadImageToSanity = async (imageUrl: string) => {
     const res = await fetch(imageUrl);
     
-    // Convert the response body to a ReadableStream
     if (!res.ok) {
       throw new Error(`Failed to fetch image: ${imageUrl} - Status: ${res.status}`);
     }
   
-    const contentType = res.headers.get("content-type") || "image/jpeg"; // Default to JPEG if content type is missing
+    const contentType = res.headers.get("content-type") || "image/jpeg"; 
   
     const imageAsset = await client.assets.upload('image', res.body as any, {
       filename: imageUrl.split('/').pop() || "image",

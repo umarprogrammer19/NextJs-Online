@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Cart = () => {
   const [cart, setCart] = useState<any>();
-  
+
   useEffect(() => {
     (async () => {
       const getCartItem = localStorage.getItem("item");
