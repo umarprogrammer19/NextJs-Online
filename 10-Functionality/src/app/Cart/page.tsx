@@ -3,19 +3,41 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Cart = () => {
-  const [cart, setCart] = useState<any>();
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+}
 
+const Cart = () => {
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [subtotal, setSubtotal] = useState(0);
+
+  // Load cart items from localStorage
   useEffect(() => {
-    (async () => {
-      const getCartItem = localStorage.getItem("item");
-      if (getCartItem) {
-        const response = await JSON.parse(getCartItem);
-        setCart(response);
-      };
-    })();
+    const getCartItems = localStorage.getItem("cart"); 
+    if (getCartItems) {
+      const parsedCart: CartItem[] = JSON.parse(getCartItems);
+      setCart(parsedCart);
+      calculateSubtotal(parsedCart);
+    }
   }, []);
 
+  // Calculate subtotal
+  const calculateSubtotal = (items: CartItem[]) => {
+    const total = items.reduce((sum, item) => sum + item.price, 0);
+    setSubtotal(total);
+  };
+
+  // Remove item from the cart
+  const removeItem = (id: number) => {
+    const updatedCart = cart.filter((item) => item.id !== id);
+    setCart(updatedCart);
+    localStorage.setItem("item", JSON.stringify(updatedCart));
+    calculateSubtotal(updatedCart);
+  };
 
   return (
     <div className="w-full px-4 md:px-20 bg-[#F9F9F9] py-8">
@@ -25,38 +47,45 @@ const Cart = () => {
           Your shopping cart
         </h1>
 
-        {/* Flex Container Header for Product, Quantity, and Total */}
+        {/* Flex Container Header for Product and Total */}
         <div className="hidden md:flex justify-between items-center mb-4">
           <p className="text-[14px] text-gray-600">Product</p>
-          <p className="text-[14px] text-gray-600">Quantity</p>
           <p className="text-[14px] text-gray-600">Total</p>
         </div>
 
-        {/* First Product */}
-        {cart && <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 md:gap-0">
-          {/* Product Section */}
-          <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
-            <Image src={cart.image} alt="silk" width={109} height={134} />
-            <div>
-              <h1 className="text-lg md:text-xl font-medium mb-2">
-                {cart.name}
-              </h1>
-              <p className="text-[#2A254B] text-[14px] mb-2">
-                A timeless ceramic vase with a tri-color grey glaze.
-              </p>
-              <p className="text-lg font-semibold">{cart.price}</p>
+        {/* Cart Items */}
+        {cart.length > 0 ? (
+          cart.map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 md:gap-0"
+            >
+              {/* Product Section */}
+              <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
+                <Image src={item.image} alt={item.name} width={109} height={134} />
+                <div>
+                  <h1 className="text-lg md:text-xl font-medium mb-2">
+                    {item.name}
+                  </h1>
+                  <p className="text-[#2A254B] text-[14px] mb-2">
+                    {item.description}
+                  </p>
+                  <p className="text-lg font-semibold">£{item.price}</p>
+                </div>
+              </div>
+
+              {/* Remove Button */}
+              <button
+                onClick={() => removeItem(item.id)}
+                className="text-red-500 text-sm hover:underline"
+              >
+                Remove
+              </button>
             </div>
-          </div>
-
-          {/* Quantity Section */}
-          <div className="flex justify-center items-center gap-4">
-            <Image src="/Stepper.png" alt="stepper" width={122} height={46} />
-          </div>
-
-          {/* Total Section */}
-          <div className="text-lg font-semibold text-[#2A254B]">£85</div>
-        </div>}
-
+          ))
+        ) : (
+          <p className="text-gray-600">Your cart is empty.</p>
+        )}
       </div>
 
       {/* Divider */}
@@ -69,7 +98,7 @@ const Cart = () => {
             <h1 className="font-normal text-[#4E4D93] text-[20px] mb-2">
               Subtotal
             </h1>
-            <p className="text-black text-lg font-normal">£210</p>
+            <p className="text-black text-lg font-normal">£500</p>
             <p className="text-sm text-[#4E4D93]">
               Taxes and shipping are calculated at checkout
             </p>
