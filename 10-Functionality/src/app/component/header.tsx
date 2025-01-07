@@ -20,7 +20,7 @@ const Header = () => {
 
         {/* Center Section: Brand Name */}
         <h1 className="text-lg md:text-xl font-normal text-black text-center font-[clash]">
-          Avian
+          Avion
         </h1>
 
         {/* Right Section: Icons */}
