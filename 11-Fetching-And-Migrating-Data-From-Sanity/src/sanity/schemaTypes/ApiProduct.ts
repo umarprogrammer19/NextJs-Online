@@ -1,5 +1,5 @@
 export default {
-    name: 'ProductApi',
+    name: 'Products',
     title: 'Products',
     type: 'document',
     fields: [

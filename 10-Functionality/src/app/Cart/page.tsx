@@ -14,10 +14,11 @@ interface CartItem {
 const Cart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState(0);
+  console.log(subtotal);
 
   // Load cart items from localStorage
   useEffect(() => {
-    const getCartItems = localStorage.getItem("cart"); 
+    const getCartItems = localStorage.getItem("cart");
     if (getCartItems) {
       const parsedCart: CartItem[] = JSON.parse(getCartItems);
       setCart(parsedCart);

@@ -9,7 +9,7 @@ export const fetchAndMigrateData = async () => {
 
         // Now create a document in Sanity
         await client.create({
-            _type: 'ProductApi',
+            _type: 'Products',
             name,
             category,
             description,
