@@ -1,5 +1,5 @@
 export default {
-    name: 'Products',
+    name: 'ApiPro',
     title: 'Products',
     type: 'document',
     fields: [

@@ -41,7 +41,7 @@ export const fetchData = async () => {
 
             // Create the product document in Sanity
             await client.create({
-                _type: "Products",
+                _type: "ApiPro",
                 product_name,
                 product_description,
                 product_price,
